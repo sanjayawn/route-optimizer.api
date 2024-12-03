@@ -1,0 +1,75 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Logs and debugging
+*.log
+*.vs/
+.vscode/
+
+# Secrets and configurations
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json
+
+# Runtime files
+*.db
+*.pdb
+*.mdb
+*.pidb
+
+# Packages
+*.nupkg
+*.snupkg
+packages/
+*.vsix
+
+# IDE and editor settings
+*.sln.ide
+.DS_Store
+Thumbs.db
+
+# Dotnet tools
+*.swp
+*.lock.json
+project.lock.json
+project.fragment.lock.json
+.dotnet_tools/
+.dotnet_tool.cache/
+
+# NuGet
+.nuget/
+*.nupkg
+.nuget/packages/
+artifacts/
+
+# Publish output
+wwwroot/
+publish/
+
+# Azure artifacts
+.scm/
+*.publishsettings
+.env
+
+# Visual Studio Code settings
+.vscode/
+
+# Resharper
+_ReSharper*
+*.DotSettings.user
+
+# Rider
+.idea/
+.idea_modules/
+.idea/.idea.*/workspace.xml
+.idea/.idea.*/*.iml
+
+# Dependency files
+global.json
