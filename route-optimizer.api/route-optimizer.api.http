@@ -1,6 +1,6 @@
 @route_optimizer.api_HostAddress = http://localhost:5102
 
-GET {{route_optimizer.api_HostAddress}}/weatherforecast/
-Accept: application/json
+# GET {{route_optimizer.api_HostAddress}}/weatherforecast/
+# Accept: application/json
 
 ###

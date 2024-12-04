@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using route_optimizer.api.dto;
+using route_optimizer.api.Requests;
+using route_optimizer.api.Responses;
+using route_optimizer.api.Services;
 
 namespace route_optimizer.api.Controllers
 {
@@ -7,46 +9,49 @@ namespace route_optimizer.api.Controllers
     [Route("api/[controller]")]
     public class DijkstraController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+    
 
         private readonly ILogger<DijkstraController> _logger;
+        private readonly ShortestPathService _shortestPathService;
 
         public DijkstraController(ILogger<DijkstraController> logger)
         {
             _logger = logger;
+            _shortestPathService = new ShortestPathService();
         }
 
-        //[HttpGet("GetPath")]
-        //public IEnumerable<WeatherForecast> GetOPtimizePath()
-        //{
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-        //        TemperatureC = Random.Shared.Next(-20, 55),
-        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
 
-        [HttpGet("GetShortestPath")]
-        public IEnumerable<WeatherForecast> GetShortestPath(string fromNode, string toNode)
+        [HttpPost("GetShortestPath")]
+        public IActionResult CalculateShortestPath([FromBody] PathRequest request)
         {
-            //
-            //write a method to return shorest path
-            ShortestPathData shortestPath = new ShortestPathData();
 
-
-
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            try
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                if (string.IsNullOrEmpty(request.From) || string.IsNullOrEmpty(request.To))
+                {
+                    //return BadRequest("Both From and To nodes are required.");
+                    return BadRequest(ApiResponse<object>.ErrorResponse("Both From and To nodes are required"));
+                }
+
+                var result = _shortestPathService.CalculateShortestPath(request.From, request.To);
+
+
+                var data = result;
+
+                // Return successful response
+                return Ok(ApiResponse<object>.SuccessResponse(data));
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle specific exceptions
+                return BadRequest(ApiResponse<object>.ErrorResponse(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                // Handle unexpected exceptions
+                return StatusCode(500, ApiResponse<object>.ErrorResponse("An unexpected error occurred."));
+            }
+    
         }
 
     }
